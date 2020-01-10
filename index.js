@@ -1,6 +1,5 @@
 const DB = require('./dbConnect');
 const path = require('path');
-const datab = new DB();
 const express = require('express');
 const app = express();
 
@@ -11,9 +10,9 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.get('/api/items', (req, res) => {
-    const d = datab.getItems();
-    console.log('blah: ' + d);
-    res.json(d);
+    DB.getItems(function (data) {
+        res.json(data);
+    });
 });
 
 app.get('*', (req, res) => {
