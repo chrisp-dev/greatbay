@@ -10,17 +10,31 @@ DB.connection = mysql.createConnection({
     database: "greatbay_db"
 });
 
-DB.getItems = function (cb) {
-    DB.connection.connect(function (err) {
-        if (err) throw err;
-        DB.connection.query("SELECT * FROM items", function (errr, data) {
-            if (errr) throw errr;
-            console.table(data);
+DB.connection.connect(function (err) {
+    if (err) throw err;
 
-            DB.connection.end();
+});
+
+DB.getItems = function (cb) {
+    // DB.connection.connect(function (err) {
+    //     if (err) throw err;
+
+    DB.connection.query("SELECT * FROM items", function (errr, data) {
+        if (errr) throw errr;
+        cb(data);
+    });
+    // });
+}
+
+DB.save = function (data, cb) {
+    // DB.connection.connect(function (err) {
+    //     if (err) throw err;
+
+    DB.connection.query("INSERT INTO items (name, initial_bid) VALUES (?)", data,
+        function (er, data) {
             cb(data);
         });
-    });
+    // });
 }
 
 module.exports = DB;
